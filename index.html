@@ -38,10 +38,28 @@
       // When the user presses enter, send the message to the Faye server
       $('#userinput').keyup(function(e) {
         if (e.keyCode == 13) {
-          var today = new Date();
-      var minutes = today.getUTCMinutes();
-      var hours = today.getUTCHours();
-          client.publish('/messages', { text: $('#userinput').val(), user:"User " +userId +":",time: hours+":"+minutes});
+         // var today = new Date();
+      //var minutes = today.getUTCMinutes();
+      //var hours = today.getUTCHours();
+           var currenttime = new Date();
+        var hours = currenttime.getHours();
+        var minutes = currenttime.getMinutes();
+        var seconds = currenttime.getSeconds();
+         if(seconds < 10)
+        { seconds= "0" + seconds;}
+      if(minutes < 10)
+        { minutes= "0" + minutes;}
+        if(hours < 10)
+        { hours= "0" + hours;}
+        var meridiem ="AM";
+        if(hours > 12)
+        {hours =hours -12;
+        meridiem = "PM";}
+        if(hours === 0)
+        { hours=12;
+        }
+
+          client.publish('/messages', { text: $('#userinput').val() +" time:"+hours+":"+minutes+":"+seconds+" "+meridiem, user:"User " +userId,});
           $('#userinput').val('');
         }
       });
